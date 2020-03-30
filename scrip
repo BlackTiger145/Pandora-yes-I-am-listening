@@ -8,6 +8,43 @@
 // @grant GM_registerMenuCommand
 // ==/UserScript==
 
+//The script action order
+window.onload = setTimeout(start,8000);
+
+function start(){
+    var title = document.title;
+    //check if in the log-in screen
+    var titleLogIn = title.includes('Music and Podcasts');
+    var titlePlayer = title.includes ('Now Playing');
+    if (titleLogIn == true){
+        document.getElementsByClassName('ButtonT3 ButtonT3--large ButtonT3--dark ButtonT3--full')[0].click();
+        setTimeout(start,3000);
+    }
+    //check if in the player menu
+    else if ( titlePlayer == false){
+        //alert('player');
+        start();
+    }
+    //move to start setting the player scripts
+    else {
+        inPlayer();
+    }
+}
+
+function inPlayer(){
+    setTimeout(function(){
+        listeningCheck();
+        skipOnStop();
+        shuffle();
+    },5000);
+    setInterval(function(){
+        restricted();
+        title();
+        indicator();
+    },5000);
+
+}
+
 //buttons and functions
 function next() {
     document.querySelectorAll('[data-qa=skip_button]') [0].click();
@@ -99,39 +136,3 @@ function shuffle(){
     }
 }
 
-//The script action order
-window.onload = setTimeout(start,8000);
-
-function start(){
-    var title = document.title;
-    //check if in the log-in screen
-    var titleLogIn = title.includes('Music and Podcasts');
-    var titlePlayer = title.includes ('Now Playing');
-    if (titleLogIn == true){
-        document.getElementsByClassName('ButtonT3 ButtonT3--large ButtonT3--dark ButtonT3--full')[0].click();
-        setTimeout(start,3000);
-    }
-    //check if in the player menu
-    else if ( titlePlayer == false){
-        //alert('player');
-        start();
-    }
-    //move to start setting the player scripts
-    else {
-        inPlayer();
-    }
-}
-
-function inPlayer(){
-    setTimeout(function(){
-        listeningCheck();
-        skipOnStop();
-        shuffle();
-    },5000);
-    setInterval(function(){
-        restricted();
-        title();
-        indicator();
-    },5000);
-
-}
