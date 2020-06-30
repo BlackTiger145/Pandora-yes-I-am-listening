@@ -116,7 +116,6 @@ function inPlayer(){
     },5000);
     setInterval(skipOnStop, 30000);
     setInterval(function(){
-        restricted();
         title();
     },5000);    
 }
