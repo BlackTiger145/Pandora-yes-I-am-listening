@@ -9,6 +9,6 @@ Some of my original features was removed by me becuse they are more personal set
 - Set the site to use shuffle (can be disabled in the code)
 
 ## Installation
-- In order to use this script you will need a script add-on to your browser. I use Tampermonkey but fill free to use what you like.
+- In order to use this script you will need a userscript add-on for your browser. I use Tampermonkey but fill free to use what you like.
 ## Disable shuffle
 - To disable the shuffle feature just open the script go to 'function inPlayer' andd add // before shuffle(), line 38.
