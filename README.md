@@ -6,7 +6,7 @@ Some of my original features was removed by me becuse they are more personal set
 - Auto click the 'I'm here button' to keep playing.
 - Track and try to replay your music when the song get stuck.
 - Set the tab title to the song name witch is playing.
-- Set the site to use shuffle (can be disabled in the code see more in the Installation)
+- Set the site to use shuffle (can be disabled in the code)
 
 ## Installation
 - In order to use this script you will need a script add-on to your browser. I use Tampermonkey but fill free to use what you like.
