@@ -1,6 +1,6 @@
-This is a simple script for some quality of life features for Pandora.com.
-I made a script for my own needs and used for quite some time, and now I publish it to any how needs.
-Some of my original features was removed by me becuse they are more personal settings, but the script is fully useable as it is.
+This is a simple script for some quality of life features for Pandora.com.  
+I made the script for my own needs and used for quite some time, and now I publish it to any one who wants.  
+Some of my original features was removed by me becuse they are more personal settings, but the script is fully useable as it is.  
 
 ## Features
 - Auto click the 'I'm here button' to keep playing.
