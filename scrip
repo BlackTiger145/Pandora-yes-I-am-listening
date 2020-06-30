@@ -1,51 +1,12 @@
 // ==UserScript==
-// @name        Pandora I am listening
-// @namespace   Pandora I am listening
+// @name        Keep listening
+// @namespace   Pandora test
 // @description click
 // @include     https://www.pandora.com/*
 // @version     7/1/18
 // @Author      Itai
-// @grant GM_registerMenuCommand
 // ==/UserScript==
 
-//The script action order
-window.onload = setTimeout(start,8000);
-
-function start(){
-    var title = document.title;
-    //check if in the log-in screen
-    var titleLogIn = title.includes('Music and Podcasts');
-    var titlePlayer = title.includes ('Now Playing');
-    if (titleLogIn == true){
-        document.getElementsByClassName('ButtonT3 ButtonT3--large ButtonT3--dark ButtonT3--full')[0].click();
-        setTimeout(start,3000);
-    }
-    //check if in the player menu
-    else if ( titlePlayer == false){
-        //alert('player');
-        start();
-    }
-    //move to start setting the player scripts
-    else {
-        inPlayer();
-    }
-}
-
-function inPlayer(){
-    setTimeout(function(){
-        listeningCheck();
-        skipOnStop();
-        shuffle();
-    },5000);
-    setInterval(function(){
-        restricted();
-        title();
-        indicator();
-    },5000);
-
-}
-
-//buttons and functions
 function next() {
     document.querySelectorAll('[data-qa=skip_button]') [0].click();
 }
@@ -59,7 +20,7 @@ function reload() {
     location.reload();
 }
 function getTime() {
-    var time = document.querySelectorAll('[data-qa=elapsed_time]') [0].innerHTML.replace(':', '');
+    var time = document.querySelectorAll('audio:last-child')[0].currentTime
     return time;
 }
 function getName(){
@@ -68,13 +29,8 @@ function getName(){
     name = name.replace('amp;', '');
     return name;
 }
-function restricted(){
-    var restricted = document.getElementsByClassName('Restricted__title')[0];
-    if (restricted !=null){
-        reload();
-    }
-}
 function skipOnStop() {
+    var indic = indicator()
     var playButton = document.querySelectorAll('[data-qa=play_button]') [0];
     if (playButton != null) {
         play();
@@ -86,10 +42,11 @@ function skipOnStop() {
         if (time == timeNow) {
             next();
         }
-        reloadNoProg(time);
+        indic.style.color="black";
+        reloadNoProg(time, indic);
     }, 10000);
 }
-function reloadNoProg(n) {
+function reloadNoProg(n, indic) {
     var time = n;
     setTimeout(function () {
         var timeNow = getTime();
@@ -97,10 +54,8 @@ function reloadNoProg(n) {
         if ((time == timeNow) || (timeNow == null)) {
             reload();
         }
-        else {
-            skipOnStop();
-        }
-    }, 30000);
+            indic.style.color="#e66767";
+    }, 10000);
 }
 function listeningCheck() {
     var lisButton = document.querySelectorAll('[data-qa=keep_listening_button]') [0];
@@ -110,29 +65,58 @@ function listeningCheck() {
     setTimeout(listeningCheck, 5000);
 }
 function indicator(){
-    var one = document.getElementsByClassName('ButtonLink ButtonLink--nav ButtonLink--nav--upgrade--darkTheme') [0];
-    one.innerHTML= "Custom Script";
-    indicatorColor(one);
-}
-function indicatorColor(one){
-    one.style.color="black";
-    setTimeout(function(){
-        one.style.color="#e66767";
-    },3000);
+    var indic = document.getElementsByClassName('ButtonLink ButtonLink--nav ButtonLink--nav--upgrade--darkTheme') [0];
+    indic.innerHTML= "Custom Script";
+    return indic;
 }
 function title(){
     var title = getName();
     document.title= title;
 }
 function shuffle(){
-    //alert("in shufle");
     var shuffleCheck = document.getElementsByClassName('ShuffleButton__button__shuffleString') [0].innerHTML;
     var n = shuffleCheck.includes('Shuffle Stations On');
-    //alert('test'+ n);
     if(n == false ){
-        //alert('in the if');
         document.getElementsByClassName('ShuffleButton__button--compact--minimal')[0].click();
         setTimeout (shuffle,2000);
     }
 }
 
+window.onload = setTimeout(start,8000);
+
+function start(){
+    var title = document.title;
+    //check if in the log-in screen
+    var titleLogIn = title.includes('Music and Podcasts');
+    var titlePlayer = title.includes ('Now Playing');
+    var restricted = document.getElementsByClassName('Restricted__title')[0];
+    if (titleLogIn == true){
+        document.getElementsByClassName('ButtonT3 ButtonT3--large ButtonT3--dark ButtonT3--full')[0].click();
+        setTimeout(start,3000);
+    }
+    //check if in the player menu
+    else if ( restricted != null){
+        reload()
+    }
+    else if ( titlePlayer == false){
+        start();
+        //move to start setting the player scripts
+    }
+    else {
+        inPlayer();
+    }
+}
+
+
+function inPlayer(){
+    setTimeout(function(){
+        listeningCheck();
+        skipOnStop();
+        shuffle();
+    },5000);
+    setInterval(skipOnStop, 30000);
+    setInterval(function(){
+        restricted();
+        title();
+    },5000);    
+}
